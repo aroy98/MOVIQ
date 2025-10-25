@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { Search } from "@/components/search"
 import React, { useCallback, useEffect } from "react";
 import { useSkeletonCount } from "@/hooks/useSkeletonCount";

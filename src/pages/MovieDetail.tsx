@@ -6,12 +6,12 @@ import { useApi } from "@/hooks/useApi";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogClose, DialogContent } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { MovieCard } from "@/components/card";
 import { X } from "lucide-react";
 import { WatchlistButton } from "@/components/watch-list";
-import type { WatchlistMovie } from "@/hooks/useWatchlist";
+import type { Movie } from "@/interface";
 
 type TMDBVideo = { key: string; name: string; type: string; site: string };
 type TMDBCast = { id: number; name: string; character: string; profile_path: string | null };
@@ -76,7 +76,7 @@ export default function MovieDetail() {
     const backdrop = details.backdrop_path ? ENDPOINTS.IMAGE(details.backdrop_path, "w1280") : null;
     // const poster = details.poster_path ? ENDPOINTS.IMAGE(details.poster_path, "original") : null;
 
-    const watchlistMovie: WatchlistMovie = {
+    const watchlistMovie: Movie = {
         id: Number(id),
         title: details.title,
         year: details?.release_date?.split?.("-")?.[0] ?? "",
@@ -265,10 +265,6 @@ function formatRuntime(mins?: number) {
 }
 
 function CrewGrid({ details }: { details: any }) {
-    // If you’re appending release_dates in details, you can also extract certification here if you want.
-    const crew = (details.credits?.crew ?? details.crew ?? []) as Array<any>;
-    // If credits aren’t in details, we already fetched credits separately—keep this simple section to show director(s)/writer(s) from details if present.
-    const directors = (details?.belongs_to_collection ? [] : crew)?.filter((c: any) => c.job === "Director") ?? [];
     return (
         <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>

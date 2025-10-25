@@ -1,4 +1,3 @@
-import * as React from "react";
 import { Input } from "@/components/ui/input";
 import { Loader2, X } from "lucide-react";
 import type { ChangeEventHandler } from "react";

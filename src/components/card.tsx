@@ -3,7 +3,7 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Star } from "lucide-react";
 import { ENDPOINTS } from "@/api/endpoints";
 import { WatchlistButton } from "@/components/watch-list";
-import type { WatchlistMovie } from "@/hooks/useWatchlist";
+import type { Movie } from "@/interface"
 
 type MovieCardProps = {
   id: number;
@@ -33,7 +33,7 @@ export function MovieCard({
       </svg>`
     );
 
-  const watchlistMovie: WatchlistMovie = {
+  const watchlistMovie: Movie = {
     id,
     title,
     year,
