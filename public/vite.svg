@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="512" height="512" viewBox="0 0 512 512"
+     role="img" aria-label="Moviq M logo — modern minimalist cinematic">
+  <!-- Background (dark cinematic tone) -->
+  <rect width="512" height="512" fill="#1c1c1f" rx="96" ry="96"/>
+
+  <!-- Stylized “M” -->
+  <path d="M120 384V140h64l72 112 72-112h64v244h-64V252l-72 112-72-112v132z"
+        fill="#ffffff"/>
+
+  <!-- Optional subtle shadow for depth -->
+  <path d="M120 384V140h64l72 112 72-112h64v244h-64V252l-72 112-72-112v132z"
+        fill="#000000" opacity="0.12" transform="translate(4,4)"/>
+
+  <title>Moviq M logo</title>
+  <desc>White geometric M monogram on a dark cinematic background with rounded edges, minimalist style.</desc>
+</svg>
