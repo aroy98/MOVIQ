@@ -1,13 +1,13 @@
 // src/components/WatchlistButton.tsx
 import { Bookmark, BookmarkCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useWatchlist } from "@/hooks/useWatchlist";
 import type { WatchListProps } from "@/interface";
 
-export function WatchlistButton({ movie, className, size = 18 }: WatchListProps) {
-  const { has, toggle } = useWatchlist();
-  const inList = has(movie.id);
 
+export function WatchlistButton({ movie, className, size = 18, has, toggle }: WatchListProps) {
+
+  const inList = has(movie.id);
+  
   return (
     <button
       type="button"
@@ -16,7 +16,6 @@ export function WatchlistButton({ movie, className, size = 18 }: WatchListProps)
       onClick={(e) => {
         toggle(movie);
         e.preventDefault();
-
       }}
       className={cn(
         "inline-flex items-center gap-1 rounded-full bg-black/60 px-2.5 py-1 text-xs text-white",

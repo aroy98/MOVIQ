@@ -9,6 +9,7 @@ import { MovieCard } from "@/components/card";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { useDebounce } from "@/hooks/useDebounce";
 import type { MovieExplorerProps, MovieResult } from "@/interface";
+import { useWatchlist } from "@/hooks/useWatchlist";
 
 export default function MovieExplorer({
     endpoint,
@@ -20,6 +21,7 @@ export default function MovieExplorer({
     const containerRef = useRef<HTMLDivElement>(null);
     const skeletonCount = useSkeletonCount(containerRef as React.RefObject<HTMLElement>);
     const { request, loading } = useApi();
+    const { has, toggle } = useWatchlist();
 
     const [data, setData] = useState<MovieResult | null>(null);
 
@@ -135,6 +137,8 @@ export default function MovieExplorer({
                             year={movie?.release_date?.split?.("-")?.[0] ?? ""}
                             rating={movie.vote_average}
                             scale={1.2}
+                            has={has}
+                            toggle={toggle}
                         />
                     </Link>
                 ))}

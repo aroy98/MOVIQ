@@ -3,17 +3,8 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Star } from "lucide-react";
 import { ENDPOINTS } from "@/api/endpoints";
 import { WatchlistButton } from "@/components/watch-list";
-import type { Movie } from "@/interface"
+import type { Movie, MovieCardProps } from "@/interface"
 
-type MovieCardProps = {
-  id: number;
-  posterUrl: string;
-  title: string;
-  year: string | number;
-  rating?: number | null;
-  onClick?: () => void;
-  scale?: number; // optional: e.g. 1.03
-};
 
 export function MovieCard({
   id,
@@ -23,6 +14,8 @@ export function MovieCard({
   rating,
   onClick,
   scale = 1.03,
+  has,
+  toggle
 }: MovieCardProps) {
   const fallback =
     "data:image/svg+xml;charset=UTF-8," +
@@ -41,8 +34,7 @@ export function MovieCard({
     rating: rating ?? null,
   };
 
-  const label = `${title} (${year}) average rating ${typeof rating === "number" ? rating.toFixed(1) : "N/A"
-    }`;
+  const label = `${title} (${year}) average rating ${typeof rating === "number" ? rating.toFixed(1) : "N/A"}`;
 
   return (
     <Card
@@ -68,7 +60,7 @@ export function MovieCard({
       <AspectRatio ratio={2 / 3} className="relative">
 
         <div className="absolute left-2 top-2 z-20">
-          <WatchlistButton movie={watchlistMovie} />
+          <WatchlistButton movie={watchlistMovie} has={has} toggle={toggle} />
         </div>
 
         <img

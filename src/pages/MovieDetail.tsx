@@ -1,5 +1,4 @@
-// src/pages/MovieDetailPage.tsx
-import * as React from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ENDPOINTS } from "@/api/endpoints";
 import { useApi } from "@/hooks/useApi";
@@ -7,11 +6,14 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogClose, DialogContent } from "@/components/ui/dialog";
-import { Skeleton } from "@/components/ui/skeleton";
 import { MovieCard } from "@/components/card";
 import { X } from "lucide-react";
 import { WatchlistButton } from "@/components/watch-list";
 import type { Movie } from "@/interface";
+import { formatRuntime } from "@/utils";
+import { Crew } from "@/components/crew";
+import { MovieExplorerSkeleton } from "@/components/movie-explorer-skeleton";
+import { useWatchlist } from "@/hooks/useWatchlist";
 
 type TMDBVideo = { key: string; name: string; type: string; site: string };
 type TMDBCast = { id: number; name: string; character: string; profile_path: string | null };
@@ -20,14 +22,15 @@ export default function MovieDetail() {
     const { id = "" } = useParams();
     const { request, loading } = useApi();
 
-    const [details, setDetails] = React.useState<any>(null);
-    const [videos, setVideos] = React.useState<TMDBVideo[]>([]);
-    const [cast, setCast] = React.useState<TMDBCast[]>([]);
-    const [similar, setSimilar] = React.useState<any[]>([]);
-    const [openTrailer, setOpenTrailer] = React.useState(false);
-    const [trailerKey, setTrailerKey] = React.useState<string | null>(null);
+    const [details, setDetails] = useState<any>(null);
+    const [videos, setVideos] = useState<TMDBVideo[]>([]);
+    const [cast, setCast] = useState<TMDBCast[]>([]);
+    const [similar, setSimilar] = useState<any[]>([]);
+    const [openTrailer, setOpenTrailer] = useState(false);
+    const [trailerKey, setTrailerKey] = useState<string | null>(null);
+    const { has, toggle } = useWatchlist();
 
-    React.useEffect(() => {
+    useEffect(() => {
         let alive = true;
         const run = async () => {
             try {
@@ -40,7 +43,7 @@ export default function MovieDetail() {
                 if (!alive) return;
                 setDetails(d);
                 setVideos((v?.results ?? []) as TMDBVideo[]);
-                setCast((c?.cast ?? []).slice(0, 12));     // show top 12
+                setCast((c?.cast ?? []).slice(0, 12));
                 setSimilar((s?.results ?? []).slice(0, 12));
             } catch (e) {
                 console.error(e);
@@ -50,7 +53,7 @@ export default function MovieDetail() {
         return () => { alive = false; };
     }, [id, request]);
 
-    const playTrailer = React.useCallback(() => {
+    const playTrailer = useCallback(() => {
         const yt = videos.find(x => x.site === "YouTube" && (x.type === "Trailer" || x.type === "Teaser"));
         if (yt) {
             setTrailerKey(yt.key);
@@ -59,7 +62,7 @@ export default function MovieDetail() {
     }, [videos]);
 
     if (!details && loading) {
-        return <PageSkeleton />;
+        return <MovieExplorerSkeleton />;
     }
 
     if (!details) {
@@ -123,7 +126,7 @@ export default function MovieDetail() {
                             z-30
                         "
                 >
-                    <WatchlistButton movie={watchlistMovie} aria-label="Add to Watchlist" />
+                    <WatchlistButton movie={watchlistMovie} aria-label="Add to Watchlist" has={has} toggle={toggle} />
                 </div>
             </div>
 
@@ -132,18 +135,6 @@ export default function MovieDetail() {
                 <Card className="overflow-hidden">
                     <CardContent className="p-4 md:p-6">
                         <div className="grid grid-cols-1 md:grid-cols-[220px,1fr] gap-6">
-                            {/* <div>
-                                {poster ? (
-                                    <img
-                                        src={poster}
-                                        alt={details.title}
-                                        className="h-auto w-auto max-w-full max-h-[500px] rounded-xl shadow"
-                                        loading="lazy"
-                                    />
-                                ) : (
-                                    <div className="w-full h-[320px] rounded-xl bg-muted" />
-                                )}
-                            </div> */}
                             <div>
                                 {details.tagline ? (
                                     <p className="italic opacity-80 mb-3">“{details.tagline}”</p>
@@ -156,7 +147,7 @@ export default function MovieDetail() {
                                 ) : null}
 
                                 {/* Key people */}
-                                <CrewGrid details={details} />
+                                <Crew details={details} />
                             </div>
                         </div>
                     </CardContent>
@@ -217,6 +208,8 @@ export default function MovieDetail() {
                                         title={m.title ?? m.original_title}
                                         year={(m.release_date ?? "").slice(0, 4)}
                                         rating={m.vote_average}
+                                        has={has}
+                                        toggle={toggle}
                                     />
                                 </Link>
                             ))}
@@ -257,57 +250,3 @@ export default function MovieDetail() {
     );
 }
 
-function formatRuntime(mins?: number) {
-    if (!mins || mins <= 0) return "";
-    const h = Math.floor(mins / 60);
-    const m = mins % 60;
-    return `${h}h ${m}m`;
-}
-
-function CrewGrid({ details }: { details: any }) {
-    return (
-        <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-                <h4 className="font-semibold mb-1">Status</h4>
-                <div className="opacity-80">{details.status ?? "—"}</div>
-            </div>
-            <div>
-                <h4 className="font-semibold mb-1">Language</h4>
-                <div className="opacity-80">{(details.spoken_languages?.[0]?.english_name) ?? "—"}</div>
-            </div>
-        </div>
-    );
-}
-
-function PageSkeleton() {
-    return (
-        <div>
-            <div className="h-[40vh] w-full bg-muted" />
-            <div className="mx-auto max-w-6xl -mt-16 pb-12">
-                <Card>
-                    <CardContent className="p-6 grid grid-cols-1 md:grid-cols-[220px,1fr] gap-6">
-                        <Skeleton className="w-full aspect-[2/3]" />
-                        <div>
-                            <Skeleton className="h-6 w-2/3 mb-3" />
-                            <Skeleton className="h-4 w-full mb-2" />
-                            <Skeleton className="h-4 w-5/6 mb-2" />
-                            <Skeleton className="h-4 w-4/6" />
-                        </div>
-                    </CardContent>
-                </Card>
-                <h3 className="text-xl font-semibold mt-10 mb-3">Top Billed Cast</h3>
-                <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-6">
-                    {Array.from({ length: 6 }).map((_, i) => (
-                        <Card key={i}><CardContent className="p-0">
-                            <Skeleton className="w-full aspect-[2/3]" />
-                            <div className="p-3">
-                                <Skeleton className="h-4 w-3/4 mb-2" />
-                                <Skeleton className="h-3 w-1/2" />
-                            </div>
-                        </CardContent></Card>
-                    ))}
-                </div>
-            </div>
-        </div>
-    );
-}

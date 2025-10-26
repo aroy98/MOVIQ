@@ -1,13 +1,18 @@
 // src/pages/WatchlistPage.tsx
 import { useMemo } from "react";
-import { useNavigate } from "react-router-dom";
-import { useWatchlist } from "@/hooks/useWatchlist";
+import { Link, useNavigate } from "react-router-dom";
 import { MovieCard } from "@/components/card";
 import { Card } from "@/components/ui/card";
+import { useWatchlist } from "@/hooks/useWatchlist";
+
 
 export default function Watchlist() {
-  const { list } = useWatchlist();
+
+  const { list, has, toggle } = useWatchlist();
+
   const navigate = useNavigate();
+
+  console.log({ list })
 
   const empty = useMemo(() => list.length === 0, [list]);
 
@@ -25,15 +30,18 @@ export default function Watchlist() {
   return (
     <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6">
       {list.map((movie) => (
-        <MovieCard
-          key={`movie-${movie.id}`}
-          id={movie.id}
-          title={movie.title}
-          year={movie.year}
-          rating={movie.rating}
-          posterUrl={movie.posterUrl}
-          onClick={() => navigate(`/${movie.id}`)}
-        />
+        <Link key={movie.id} to={`/${movie.id}`} className="block">
+          <MovieCard
+            key={`movie-${movie.id}`}
+            id={movie.id}
+            title={movie.title}
+            year={movie.year}
+            rating={movie.rating}
+            posterUrl={movie.posterUrl}
+            has={has}
+            toggle={toggle}
+          />
+        </Link>
       ))}
     </div>
   );
