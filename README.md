@@ -1,6 +1,6 @@
 # 🚀 Project Setup Instructions
 
-This document provides step-by-step instructions to install dependencies, configure the TMDB API token, and start your Node.js + Vite + React project.
+This document provides step-by-step instructions to install dependencies, configure the TMDB API token, and start Vite + React project.
 
 ---
 
