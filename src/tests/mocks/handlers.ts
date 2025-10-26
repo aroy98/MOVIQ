@@ -2,8 +2,6 @@
 import { http, HttpResponse, type PathParams } from "msw";
 import { ENDPOINTS } from "@/api/endpoints";
 
-const TMDB_BASE = ""; // axiosClient likely prefixes baseURL, so we just match by path
-
 const sampleMovie = {
   id: 27205,
   title: "Inception",

@@ -1,10 +1,7 @@
 // @vitest-environment jsdom
-import { screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { describe, it, expect, vi } from "vitest";
+import { describe, it } from "vitest";
 import { renderWithRouter } from "../utils";
 import { MovieCard } from "@/components/card";
-import type { Movie } from "@/interface";
 
 describe("MovieCard", () => {
   it("renders core fields", () => {

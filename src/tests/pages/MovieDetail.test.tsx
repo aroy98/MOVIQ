@@ -1,6 +1,5 @@
 // @vitest-environment jsdom
-import { screen } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
+import { describe, it } from "vitest";
 import { renderWithRouter } from "../utils";
 import MovieDetail from "@/pages/MovieDetail";
 

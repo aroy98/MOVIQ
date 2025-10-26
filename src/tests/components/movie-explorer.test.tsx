@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, it, expect } from "vitest";
+import { describe, it } from "vitest";
 import { renderWithRouter } from "../utils";
 import MovieExplorer from "@/components/movie-explorer";
 import { ENDPOINTS } from "@/api/endpoints";
