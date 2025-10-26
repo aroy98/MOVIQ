@@ -1,6 +1,6 @@
 // src/pages/WatchlistPage.tsx
 import { useMemo } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { MovieCard } from "@/components/card";
 import { Card } from "@/components/ui/card";
 import { useWatchlist } from "@/hooks/useWatchlist";
@@ -9,11 +9,6 @@ import { useWatchlist } from "@/hooks/useWatchlist";
 export default function Watchlist() {
 
   const { list, has, toggle } = useWatchlist();
-
-  const navigate = useNavigate();
-
-  console.log({ list })
-
   const empty = useMemo(() => list.length === 0, [list]);
 
   if (empty) {

@@ -24,12 +24,9 @@ export function useWatchlist() {
 
   useEffect(() => {
     writeStorage(map);
-    console.log('writeStorage')
-    console.log({ map })
   }, [map]);
 
   useEffect(() => {
-    console.log('useEffect')
     const onStorage = (e: StorageEvent) => {
       if (e.key === STORAGE_KEY) {
         setMap(readStorage());
@@ -48,7 +45,6 @@ export function useWatchlist() {
   }, []);
 
   const remove = useCallback((id: number) => {
-    console.log('removeStorage')
     setMap(prev => {
       const copy = { ...prev };
       delete copy[id];
@@ -57,13 +53,10 @@ export function useWatchlist() {
   }, [map]);
 
   const toggle = useCallback((movie: Movie) => {
-    console.log('toggleStorage', movie)
     setMap(prev => {
-      console.log({ prev })
       const copy = { ...prev };
       if (copy[movie.id]) delete copy[movie.id];
       else copy[movie.id] = movie;
-      console.log({ copy })
       return copy;
     });
   }, [map]);

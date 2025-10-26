@@ -24,8 +24,6 @@ export default function RootLayout() {
     const path = location.pathname;
     const currentChild = path.split("/").filter(Boolean).pop();
 
-    console.log({ path, currentChild })
-
     const titleCase = (str: string) => {
         return str.replace(/-/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
     }
