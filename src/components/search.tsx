@@ -23,7 +23,7 @@ export function Search({
   return (
     <div className="relative w-full max-w-md mx-auto">
       <Input
-        type="text"
+        type="search"
         placeholder={placeholder}
         value={value}
         onChange={onChange}
